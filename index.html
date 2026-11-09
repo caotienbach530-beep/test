@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máy Tính Thông Minh — Smart Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-icon">∑</div>
+                <div>
+                    <h1>CalcStudio</h1>
+                    <p>Máy tính cơ bản &amp; khoa học</p>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="mode-switch" role="tablist" aria-label="Chế độ máy tính">
+                    <button id="modeBasic" class="mode-btn active" data-mode="basic" type="button">Cơ bản</button>
+                    <button id="modeSci" class="mode-btn" data-mode="scientific" type="button">Khoa học</button>
+                </div>
+
+                <button id="angleToggle" class="chip-btn hidden" type="button" title="Chuyển đổi Độ (DEG) / Radian (RAD)">
+                    DEG
+                </button>
+
+                <button id="themeToggle" class="icon-btn" type="button" title="Đổi giao diện Sáng / Tối" aria-label="Đổi giao diện">
+                    <span id="themeIcon">☀️</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <!-- Calculator Panel -->
+            <section class="calculator-card" aria-label="Máy tính">
+                <!-- Display Screen -->
+                <div class="display-container">
+                    <div class="display-top-bar">
+                        <span id="memoryIndicator" class="memory-badge hidden">M</span>
+                        <span id="angleIndicator" class="angle-badge">DEG</span>
+                        <button id="copyBtn" class="copy-btn" type="button" title="Sao chép kết quả">
+                            <span id="copyText">Sao chép</span>
+                        </button>
+                    </div>
+                    <div id="expressionDisplay" class="expression-display" aria-live="polite"></div>
+                    <div id="resultDisplay" class="result-display" aria-live="assertive">0</div>
+                </div>
+
+                <!-- Memory Row -->
+                <div class="memory-row">
+                    <button class="mem-btn" data-action="mc" type="button" title="Xóa bộ nhớ">MC</button>
+                    <button class="mem-btn" data-action="mr" type="button" title="Gọi bộ nhớ">MR</button>
+                    <button class="mem-btn" data-action="m-plus" type="button" title="Cộng vào bộ nhớ">M+</button>
+                    <button class="mem-btn" data-action="m-minus" type="button" title="Trừ khỏi bộ nhớ">M-</button>
+                    <button class="mem-btn" data-action="ans" type="button" title="Kết quả vừa tính">ANS</button>
+                </div>
+
+                <!-- Scientific Keypad (Collapsible) -->
+                <div id="scientificPad" class="scientific-grid hidden">
+                    <button class="calc-btn sci-btn" data-insert="sin(" type="button">sin</button>
+                    <button class="calc-btn sci-btn" data-insert="cos(" type="button">cos</button>
+                    <button class="calc-btn sci-btn" data-insert="tan(" type="button">tan</button>
+                    <button class="calc-btn sci-btn" data-insert="log(" type="button" title="Logarit cơ số 10">log</button>
+                    <button class="calc-btn sci-btn" data-insert="ln(" type="button" title="Logarit tự nhiên">ln</button>
+
+                    <button class="calc-btn sci-btn" data-insert="sqrt(" type="button" title="Căn bậc hai">√x</button>
+                    <button class="calc-btn sci-btn" data-action="square" type="button" title="Bình phương">x²</button>
+                    <button class="calc-btn sci-btn" data-insert="^" type="button" title="Lũy thừa">xʸ</button>
+                    <button class="calc-btn sci-btn" data-action="factorial" type="button" title="Giai thừa">n!</button>
+                    <button class="calc-btn sci-btn" data-insert="abs(" type="button" title="Giá trị tuyệt đối">|x|</button>
+
+                    <button class="calc-btn sci-btn" data-insert="(" type="button">(</button>
+                    <button class="calc-btn sci-btn" data-insert=")" type="button">)</button>
+                    <button class="calc-btn sci-btn" data-insert="π" type="button" title="Số Pi">π</button>
+                    <button class="calc-btn sci-btn" data-insert="e" type="button" title="Số Euler">e</button>
+                    <button class="calc-btn sci-btn" data-action="reciprocal" type="button" title="Nghịch đảo">1/x</button>
+                </div>
+
+                <!-- Standard Keypad -->
+                <div class="standard-grid">
+                    <button class="calc-btn action-btn danger-text" data-action="clear" type="button" title="Xóa tất cả (Esc)">AC</button>
+                    <button class="calc-btn action-btn" data-action="backspace" type="button" title="Xóa 1 ký tự (Backspace)">⌫</button>
+                    <button class="calc-btn action-btn" data-action="percent" type="button" title="Phần trăm (%)">%</button>
+                    <button class="calc-btn operator-btn" data-insert="÷" type="button" title="Chia (/)">÷</button>
+
+                    <button class="calc-btn num-btn" data-insert="7" type="button">7</button>
+                    <button class="calc-btn num-btn" data-insert="8" type="button">8</button>
+                    <button class="calc-btn num-btn" data-insert="9" type="button">9</button>
+                    <button class="calc-btn operator-btn" data-insert="×" type="button" title="Nhân (*)">×</button>
+
+                    <button class="calc-btn num-btn" data-insert="4" type="button">4</button>
+                    <button class="calc-btn num-btn" data-insert="5" type="button">5</button>
+                    <button class="calc-btn num-btn" data-insert="6" type="button">6</button>
+                    <button class="calc-btn operator-btn" data-insert="-" type="button" title="Trừ (-)">−</button>
+
+                    <button class="calc-btn num-btn" data-insert="1" type="button">1</button>
+                    <button class="calc-btn num-btn" data-insert="2" type="button">2</button>
+                    <button class="calc-btn num-btn" data-insert="3" type="button">3</button>
+                    <button class="calc-btn operator-btn" data-insert="+" type="button" title="Cộng (+)">+</button>
+
+                    <button class="calc-btn num-btn" data-action="negate" type="button" title="Đổi dấu âm/dương">±</button>
+                    <button class="calc-btn num-btn" data-insert="0" type="button">0</button>
+                    <button class="calc-btn num-btn" data-insert="." type="button">.</button>
+                    <button class="calc-btn equals-btn" data-action="calculate" type="button" title="Tính kết quả (Enter)">=</button>
+                </div>
+            </section>
+
+            <!-- Side Panel: History & Quick Converter -->
+            <aside class="side-panel">
+                <div class="side-tabs">
+                    <button class="side-tab active" data-tab="historyTab" type="button">Lịch sử tính</button>
+                    <button class="side-tab" data-tab="converterTab" type="button">Đổi đơn vị nhanh</button>
+                </div>
+
+                <!-- History Tab -->
+                <div id="historyTab" class="tab-content active">
+                    <div class="panel-header">
+                        <h2>Lịch sử phép tính</h2>
+                        <button id="clearHistoryBtn" class="text-btn" type="button">Xóa tất cả</button>
+                    </div>
+                    <ul id="historyList" class="history-list">
+                        <li class="empty-state">Chưa có phép tính nào. Hãy thử tính một biểu thức!</li>
+                    </ul>
+                </div>
+
+                <!-- Quick Unit Converter Tab -->
+                <div id="converterTab" class="tab-content hidden">
+                    <div class="panel-header">
+                        <h2>Chuyển đổi nhanh</h2>
+                    </div>
+                    <div class="converter-form">
+                        <label class="form-label" for="convCategory">Loại đại lượng</label>
+                        <select id="convCategory" class="form-select">
+                            <option value="length">Chiều dài (m, km, cm, inch, ft)</option>
+                            <option value="weight">Khối lượng (kg, g, lb, oz)</option>
+                            <option value="temperature">Nhiệt độ (°C, °F, K)</option>
+                            <option value="data">Dữ liệu số (MB, GB, TB, KB)</option>
+                        </select>
+
+                        <div class="conv-row">
+                            <div class="conv-col">
+                                <label class="form-label" for="convInput">Giá trị</label>
+                                <input id="convInput" type="number" class="form-input" value="1" step="any">
+                            </div>
+                            <div class="conv-col">
+                                <label class="form-label" for="convFrom">Từ</label>
+                                <select id="convFrom" class="form-select"></select>
+                            </div>
+                        </div>
+
+                        <div class="conv-swap-row">
+                            <button id="convSwapBtn" class="swap-btn" type="button" title="Đảo chiều chuyển đổi">⇅ Đảo đơn vị</button>
+                        </div>
+
+                        <div class="conv-row">
+                            <div class="conv-col">
+                                <label class="form-label" for="convOutput">Kết quả</label>
+                                <input id="convOutput" type="text" class="form-input readonly-input" readonly>
+                            </div>
+                            <div class="conv-col">
+                                <label class="form-label" for="convTo">Sang</label>
+                                <select id="convTo" class="form-select"></select>
+                            </div>
+                        </div>
+
+                        <button id="sendToCalcBtn" class="secondary-action-btn" type="button">
+                            Đưa kết quả vào máy tính →
+                        </button>
+                    </div>
+                </div>
+
+                <div class="keyboard-hint">
+                    <span>💡 Mẹo: Bạn có thể nhập trực tiếp từ bàn phím (`0-9`, `+`, `-`, `*`, `/`, `Enter`, `Backspace`, `Esc`).</span>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
